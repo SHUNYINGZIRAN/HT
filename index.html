@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云间小阁 - Banner管理</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ===== 所有样式与模板一致 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+
+        a,
+        a * {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-header {
+            background: rgba(255, 253, 245, 0.9);
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            margin-bottom: 25px;
+            border: 1px solid #d6ccc2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2.2rem;
+            color: #8c3c2c;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-role {
+            background: #f1e9dd;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #8c6d46;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .header-btn {
+            padding: 8px 15px;
+            background: #8c6d46;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .header-btn:hover {
+            background: #745b3a;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 25px;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: rgba(255, 253, 245, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            padding: 20px;
+            border: 1px solid #d6ccc2;
+            align-self: flex-start;
+        }
+
+        .sidebar-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.5rem;
+            color: #8c3c2c;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9e1d5;
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            color: #5c4c3e;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #f1e9dd;
+            color: #8c3c2c;
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .content-area {
+            flex: 1;
+            background: rgba(255, 253, 245, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.1);
+            padding: 25px;
+            border: 1px solid #d6ccc2;
+            min-height: 600px;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9e1d5;
+        }
+
+        .content-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2rem;
+            color: #8c3c2c;
+        }
+
+        .content-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* ===== Banner 专用样式 ===== */
+        .banner-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #ede4d8;
+            padding-bottom: 12px;
+        }
+
+        .banner-tab {
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid #d6ccc2;
+            border-radius: 30px;
+            color: #5c4c3e;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .banner-tab:hover {
+            background: #f1e9dd;
+            border-color: #c4a77d;
+        }
+
+        .banner-tab.active {
+            background: #8c6d46;
+            color: #fff;
+            border-color: #8c6d46;
+        }
+
+        .banner-tab .badge {
+            background: rgba(255, 255, 255, 0.25);
+            color: inherit;
+            border-radius: 12px;
+            padding: 0 8px;
+            font-size: 0.7rem;
+        }
+
+        .banner-tab.active .badge {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 轮播图列表（首页） */
+        .carousel-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .carousel-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(255, 253, 245, 0.7);
+            border-radius: 10px;
+            padding: 12px 16px;
+            border: 1px solid #ede4d8;
+            transition: 0.2s;
+        }
+
+        .carousel-item:hover {
+            border-color: #c4a77d;
+            background: rgba(255, 253, 245, 0.95);
+        }
+
+        .carousel-item .preview {
+            width: 80px;
+            height: 50px;
+            border-radius: 6px;
+            background: #e2d8cd;
+            background-size: cover;
+            background-position: center;
+            flex-shrink: 0;
+            border: 1px solid #d6ccc2;
+        }
+
+        .carousel-item .info {
+            flex: 1;
+        }
+
+        .carousel-item .info input {
+            width: 100%;
+            padding: 4px 10px;
+            border: 1px solid #d6ccc2;
+            border-radius: 6px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.85rem;
+            background: rgba(255, 255, 255, 0.7);
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .carousel-item .info input:focus {
+            border-color: #8c6d46;
+            box-shadow: 0 0 0 2px rgba(140, 109, 70, 0.1);
+        }
+
+        .carousel-item .info .row {
+            display: flex;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .carousel-item .info .row input {
+            flex: 1;
+        }
+
+        .carousel-item .actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .carousel-item .actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #9b8a78;
+            font-size: 0.9rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+
+        .carousel-item .actions button:hover {
+            background: rgba(140, 109, 70, 0.1);
+            color: #8c6d46;
+        }
+
+        .carousel-item .actions .del:hover {
+            color: #8c4c4c;
+            background: rgba(140, 76, 76, 0.1);
+        }
+
+        .carousel-item .order-handle {
+            cursor: grab;
+            color: #b8a994;
+            font-size: 1rem;
+            padding: 0 4px;
+        }
+
+        .carousel-item .order-handle:hover {
+            color: #8c6d46;
+        }
+
+        /* 空状态 */
+        .empty-banner {
+            text-align: center;
+            padding: 40px 20px;
+            color: #9b8a78;
+        }
+
+        .empty-banner i {
+            font-size: 2.5rem;
+            color: #d6ccc2;
+            margin-bottom: 10px;
+        }
+
+        .empty-banner p {
+            font-size: 0.9rem;
+        }
+
+        /* 表单卡片 */
+        .form-card {
+            background: rgba(255, 253, 245, 0.6);
+            border-radius: 12px;
+            padding: 20px 24px;
+            border: 1px solid #ede4d8;
+            margin-bottom: 16px;
+        }
+
+        .form-card .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-card .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-card label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #5c4c3e;
+            margin-bottom: 4px;
+        }
+
+        .form-card label .hint {
+            font-weight: 400;
+            font-size: 0.75rem;
+            color: #9b8a78;
+        }
+
+        .form-card input[type="text"],
+        .form-card input[type="url"] {
+            width: 100%;
+            padding: 8px 14px;
+            border: 1px solid #d6ccc2;
+            border-radius: 8px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            background: #fffef8;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-card input:focus {
+            border-color: #8c6d46;
+            box-shadow: 0 0 0 2px rgba(140, 109, 70, 0.1);
+        }
+
+        .form-card .upload-area {
+            border: 2px dashed #d6ccc2;
+            border-radius: 10px;
+            padding: 24px;
+            text-align: center;
+            background: rgba(255, 253, 245, 0.5);
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .form-card .upload-area:hover {
+            border-color: #8c6d46;
+            background: rgba(255, 253, 245, 0.8);
+        }
+
+        .form-card .upload-area i {
+            font-size: 2rem;
+            color: #8c6d46;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .form-card .upload-area p {
+            font-size: 0.85rem;
+            color: #9b8a78;
+        }
+
+        .form-card .upload-area input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .form-card .preview-img {
+            width: 100%;
+            max-height: 180px;
+            border-radius: 8px;
+            background: #e2d8cd;
+            background-size: cover;
+            background-position: center;
+            margin-top: 10px;
+            border: 1px solid #e9e1d5;
+            position: relative;
+        }
+
+        .form-card .preview-img .remove-img {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(140, 76, 76, 0.85);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.2s;
+        }
+
+        .form-card .preview-img .remove-img:hover {
+            background: #8c4c4c;
+            transform: scale(1.05);
+        }
+
+        .form-card .preview-img .empty-preview {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b8a994;
+            font-size: 0.85rem;
+        }
+
+        .btn-save {
+            padding: 8px 28px;
+            background: #8c6d46;
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-save:hover {
+            background: #745b3a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(92, 76, 62, 0.2);
+        }
+
+        .btn-save-outline {
+            background: transparent;
+            border: 1px solid #8c6d46;
+            color: #8c6d46;
+        }
+
+        .btn-save-outline:hover {
+            background: #f1e9dd;
+            transform: translateY(-2px);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            justify-content: flex-end;
+        }
+
+        /* 预览状态提示 */
+        .status-tip {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            background: #f0e8d8;
+            color: #a0885a;
+        }
+
+        .status-tip.active {
+            background: #dce8dc;
+            color: #4a7a4a;
+        }
+
+        /* Toast */
+        .toast-msg {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #5c4c3e;
+            color: #fef5e6;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .toast-msg.show {
+            opacity: 1;
+        }
+
+        /* 响应式 */
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .user-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .carousel-item {
+                flex-wrap: wrap;
+            }
+
+            .carousel-item .preview {
+                width: 60px;
+                height: 40px;
+            }
+
+            .carousel-item .info .row {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .banner-tabs {
+                gap: 4px;
+            }
+
+            .banner-tab {
+                padding: 6px 14px;
+                font-size: 0.8rem;
+            }
+        }
+
+        .decoration {
+            position: absolute;
+            opacity: 0.1;
+            z-index: -1;
+            font-family: 'Ma Shan Zheng', cursive;
+            color: #8c3c2c;
+        }
+
+        .decoration-1 {
+            top: 50px;
+            left: 5%;
+            font-size: 6rem;
+            transform: rotate(-10deg);
+        }
+
+        .decoration-2 {
+            bottom: 100px;
+            right: 5%;
+            font-size: 5rem;
+            transform: rotate(15deg);
+        }
+
+        .main-footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            color: #8c6d46;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="decoration decoration-1">画</div>
+    <div class="decoration decoration-2">幅</div>
+
+    <div class="container">
+        <!-- ===== 顶部导航 ===== -->
+        <header class="main-header">
+            <div class="logo">
+                <i class="fas fa-feather-alt"></i>
+                <span>云间小阁</span>
+            </div>
+
+            <div class="user-info">
+                <div class="user-role">
+                    <i class="fas fa-user-shield"></i> 管理员
+                </div>
+                <div class="user-name">李管理员</div>
+            </div>
+
+            <div class="header-actions">
+                <a href="通知.html" target="_blank" rel="noopener noreferrer">
+                    <button class="header-btn"><i class="fas fa-bell"></i> 通知</button>
+                </a>
+                <a href="设置.html" target="_blank" rel="noopener noreferrer">
+                    <button class="header-btn"><i class="fas fa-cog"></i> 设置</button>
+                </a>
+                <button class="header-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> 退出</button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- ===== 侧边栏（在文章管理上方新增 Banner） ===== -->
+            <aside class="sidebar">
+                <h2 class="sidebar-title">功能导航</h2>
+
+                <ul class="nav-list">
+                    <!-- 新增 Banner 模块，位于文章管理上方 -->
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link active">
+                            <i class="fas fa-image"></i>
+                            <span>Banner管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="艺人管理.html" class="nav-link">
+                            <i class="fas fa-user-astronaut"></i>
+                            <span>艺人管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="文章管理.html" class="nav-link">
+                            <i class="fas fa-list"></i>
+                            <span>文章管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="审核发布.html" class="nav-link">
+                            <i class="fas fa-check-circle"></i>
+                            <span>审核发布</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="文章撰写.html" class="nav-link">
+                            <i class="fas fa-edit"></i>
+                            <span>文章撰写</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="商品装修.html" class="nav-link">
+                            <i class="fas fa-box"></i>
+                            <span>商品装修</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="数据统计.html" class="nav-link">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>数据统计</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="用户管理.html" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            <span>用户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="公告管理.html" class="nav-link">
+                            <i class="fas fa-bullhorn"></i>
+                            <span>公告管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="课程管理.html" class="nav-link">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <span>课程管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="一起回家.html" class="nav-link">
+                            <i class="fas fa-home"></i>
+                            <span>一起回家</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+
+            <!-- ===== 内容区域 ===== -->
+            <main class="content-area">
+                <div class="content-header">
+                    <h2 class="content-title"> Banner管理</h2>
+                    <div class="content-actions">
+                        <button class="header-btn" id="exportBtn">
+                            <i class="fas fa-download"></i> 导出
+                        </button>
+                        <button class="header-btn" id="filterBtn">
+                            <i class="fas fa-filter"></i> 筛选
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ===== Banner 选项卡 ===== -->
+                <div class="banner-tabs" id="bannerTabs">
+                    <button class="banner-tab active" data-tab="home">
+                        <i class="fas fa-home"></i> 首页 <span class="badge">轮播</span>
+                    </button>
+                    <button class="banner-tab" data-tab="market">
+                        <i class="fas fa-store"></i> 非遗集市
+                    </button>
+                    <button class="banner-tab" data-tab="heritage">
+                        <i class="fas fa-hands"></i> 匠心传承
+                    </button>
+                    <button class="banner-tab" data-tab="academy">
+                        <i class="fas fa-graduation-cap"></i> 非遗学堂
+                    </button>
+                    <button class="banner-tab" data-tab="community">
+                        <i class="fas fa-users"></i> 社区
+                    </button>
+                </div>
+
+                <!-- ========================================================= -->
+                <!--  首页 - 轮播图管理                                         -->
+                <!-- ========================================================= -->
+                <div class="tab-panel active" id="panel-home">
+                    <div class="form-card">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+                            <div>
+                                <strong style="font-size:1rem;">首页轮播图</strong>
+                                <span style="font-size:0.75rem; color:#9b8a78; margin-left:8px;">支持多张图片，自动轮播</span>
+                            </div>
+                            <button class="btn-save" id="addSlideBtn">
+                                <i class="fas fa-plus"></i> 添加轮播图
+                            </button>
+                        </div>
+
+                        <div class="carousel-list" id="carouselList">
+                            <!-- 由JS动态渲染 -->
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="btn-save" id="saveHomeBtn"><i class="fas fa-save"></i> 保存轮播图</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========================================================= -->
+                <!--  非遗集市                                                 -->
+                <!-- ========================================================= -->
+                <div class="tab-panel" id="panel-market">
+                    <div class="form-card">
+                        <h4
+                            style="font-family:'Ma Shan Zheng', cursive; font-size:1.2rem; color:#5c4c3e; margin-bottom:14px;">
+                            <i class="fas fa-store"></i> 非遗集市 · 页面Banner
+                        </h4>
+                        <div class="form-group">
+                            <label>背景图片 <span class="hint">（建议尺寸：1920×600px）</span></label>
+                            <div class="upload-area" data-target="market">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>点击上传背景图</p>
+                                <input type="file" accept="image/*">
+                            </div>
+                            <div class="preview-img" id="preview-market">
+                                <div class="empty-preview">暂无背景图</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>主标题</label>
+                            <input type="text" id="marketTitle" placeholder="如：非遗好物 · 匠心汇聚" value="非遗好物 · 匠心汇聚">
+                        </div>
+                        <div class="form-group">
+                            <label>副标题</label>
+                            <input type="text" id="marketSubtitle" placeholder="如：探寻千年手艺之美" value="探寻千年手艺之美">
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn-save" id="saveMarketBtn"><i class="fas fa-save"></i> 保存</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========================================================= -->
+                <!--  匠心传承                                                 -->
+                <!-- ========================================================= -->
+                <div class="tab-panel" id="panel-heritage">
+                    <div class="form-card">
+                        <h4
+                            style="font-family:'Ma Shan Zheng', cursive; font-size:1.2rem; color:#5c4c3e; margin-bottom:14px;">
+                            <i class="fas fa-hands"></i> 匠心传承 · 页面Banner
+                        </h4>
+                        <div class="form-group">
+                            <label>背景图片 <span class="hint">（建议尺寸：1920×600px）</span></label>
+                            <div class="upload-area" data-target="heritage">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>点击上传背景图</p>
+                                <input type="file" accept="image/*">
+                            </div>
+                            <div class="preview-img" id="preview-heritage">
+                                <div class="empty-preview">暂无背景图</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>主标题</label>
+                            <input type="text" id="heritageTitle" placeholder="如：守艺·传心" value="守艺·传心">
+                        </div>
+                        <div class="form-group">
+                            <label>副标题</label>
+                            <input type="text" id="heritageSubtitle" placeholder="如：致敬每一位坚守的匠人" value="致敬每一位坚守的匠人">
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn-save" id="saveHeritageBtn"><i class="fas fa-save"></i> 保存</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========================================================= -->
+                <!--  非遗学堂                                                 -->
+                <!-- ========================================================= -->
+                <div class="tab-panel" id="panel-academy">
+                    <div class="form-card">
+                        <h4
+                            style="font-family:'Ma Shan Zheng', cursive; font-size:1.2rem; color:#5c4c3e; margin-bottom:14px;">
+                            <i class="fas fa-graduation-cap"></i> 非遗学堂 · 页面Banner
+                        </h4>
+                        <div class="form-group">
+                            <label>背景图片 <span class="hint">（建议尺寸：1920×600px）</span></label>
+                            <div class="upload-area" data-target="academy">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>点击上传背景图</p>
+                                <input type="file" accept="image/*">
+                            </div>
+                            <div class="preview-img" id="preview-academy">
+                                <div class="empty-preview">暂无背景图</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>主标题</label>
+                            <input type="text" id="academyTitle" placeholder="如：学非遗 · 传文脉" value="学非遗 · 传文脉">
+                        </div>
+                        <div class="form-group">
+                            <label>副标题</label>
+                            <input type="text" id="academySubtitle" placeholder="如：指尖上的中华智慧" value="指尖上的中华智慧">
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn-save" id="saveAcademyBtn"><i class="fas fa-save"></i> 保存</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========================================================= -->
+                <!--  社区                                                    -->
+                <!-- ========================================================= -->
+                <div class="tab-panel" id="panel-community">
+                    <div class="form-card">
+                        <h4
+                            style="font-family:'Ma Shan Zheng', cursive; font-size:1.2rem; color:#5c4c3e; margin-bottom:14px;">
+                            <i class="fas fa-users"></i> 社区 · 页面Banner
+                        </h4>
+                        <div class="form-group">
+                            <label>背景图片 <span class="hint">（建议尺寸：1920×600px）</span></label>
+                            <div class="upload-area" data-target="community">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>点击上传背景图</p>
+                                <input type="file" accept="image/*">
+                            </div>
+                            <div class="preview-img" id="preview-community">
+                                <div class="empty-preview">暂无背景图</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>主标题</label>
+                            <input type="text" id="communityTitle" placeholder="如：以艺会友 · 共话非遗" value="以艺会友 · 共话非遗">
+                        </div>
+                        <div class="form-group">
+                            <label>副标题</label>
+                            <input type="text" id="communitySubtitle" placeholder="如：分享你的手艺故事" value="分享你的手艺故事">
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn-save" id="saveCommunityBtn"><i class="fas fa-save"></i> 保存</button>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+
+        <footer class="main-footer">
+            <p>© 2023 云间小阁 | 文化传承，知识共享</p>
+        </footer>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-msg" id="toastMsg"></div>
+
+    <script>
+        // ============================================================
+        //  数据层
+        // ============================================================
+        const defaultData = {
+            home: {
+                slides: [
+                    { id: 's1', image: 'https://picsum.photos/id/1015/800/300', title: '云间雅集 · 非遗之美', link: '' },
+                    { id: 's2', image: 'https://picsum.photos/id/1018/800/300', title: '匠心传承 · 手作温度', link: '' },
+                    { id: 's3', image: 'https://picsum.photos/id/1020/800/300', title: '非遗学堂 · 技艺传习', link: '' }
+                ]
+            },
+            market: {
+                image: 'https://picsum.photos/id/1016/800/300', title: '非遗好物 · 匠心汇聚',
+                subtitle: '探寻千年手艺之美'
+            },
+            heritage: { image: 'https://picsum.photos/id/1022/800/300', title: '守艺·传心', subtitle: '致敬每一位坚守的匠人' },
+            academy: { image: 'https://picsum.photos/id/1024/800/300', title: '学非遗 · 传文脉', subtitle: '指尖上的中华智慧' },
+            community: {
+                image: 'https://picsum.photos/id/1025/800/300', title: '以艺会友 · 共话非遗',
+                subtitle: '分享你的手艺故事'
+            }
+        };
+
+        let bannerData = {};
+
+        // ============================================================
+        //  工具函数
+        // ============================================================
+        function showToast(msg, duration = 2200) {
+            const el = document.getElementById('toastMsg');
+            el.textContent = msg;
+            el.classList.add('show');
+            clearTimeout(el._timer);
+            el._timer = setTimeout(() => el.classList.remove('show'), duration);
+        }
+
+        function loadData() {
+            const stored = localStorage.getItem('bannerManageData');
+            if (stored) {
+                try {
+                    bannerData = JSON.parse(stored);
+                    // 确保每个模块都有数据
+                    ['home', 'market', 'heritage', 'academy', 'community'].forEach(key => {
+                        if (!bannerData[key]) {
+                            bannerData[key] = JSON.parse(JSON.stringify(defaultData[key]));
+                        }
+                    });
+                    return;
+                } catch (e) { }
+            }
+            bannerData = JSON.parse(JSON.stringify(defaultData));
+            saveData();
+        }
+
+        function saveData() {
+            localStorage.setItem('bannerManageData', JSON.stringify(bannerData));
+        }
+
+        function generateId() {
+            return 's' + Date.now() + Math.random().toString(36).substr(2, 4);
+        }
+
+        // ============================================================
+        //  渲染：首页轮播图
+        // ============================================================
+        function renderCarousel() {
+            const container = document.getElementById('carouselList');
+            const slides = bannerData.home.slides || [];
+
+            if (slides.length === 0) {
+                container.innerHTML = `
+                        <div class="empty-banner">
+                            <i class="fas fa-images"></i>
+                            <p>暂无轮播图，点击「添加轮播图」上传</p>
+                        </div>
+                    `;
+                return;
+            }
+
+            let html = '';
+            slides.forEach((slide, index) => {
+                const imgStyle = slide.image ? `background-image:url('${slide.image}');` : '';
+                html += `
+                        <div class="carousel-item" data-id="${slide.id}" draggable="true">
+                            <div class="order-handle"><i class="fas fa-grip-vertical"></i></div>
+                            <div class="preview" style="${imgStyle}"></div>
+                            <div class="info">
+                                <input type="text" class="slide-title" value="${slide.title || ''}" placeholder="轮播图标题">
+                                <div class="row">
+                                    <input type="url" class="slide-url" value="${slide.link || ''}" placeholder="跳转链接（选填）">
+                                    <input type="url" class="slide-image" value="${slide.image || ''}" placeholder="图片URL（或点击上方上传）" style="flex:1.5;">
+                                </div>
+                            </div>
+                            <div class="actions">
+                                <button class="del" data-id="${slide.id}"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+            });
+            container.innerHTML = html;
+
+            // 绑定删除事件
+            container.querySelectorAll('.del').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const id = this.dataset.id;
+                    if (confirm('确认删除该轮播图？')) {
+                        bannerData.home.slides = bannerData.home.slides.filter(s => s.id !== id);
+                        saveData();
+                        renderCarousel();
+                        showToast('已删除');
+                    }
+                });
+            });
+
+            // 绑定输入变化（实时保存）
+            container.querySelectorAll('.carousel-item').forEach(item => {
+                const id = item.dataset.id;
+                const titleInput = item.querySelector('.slide-title');
+                const urlInput = item.querySelector('.slide-url');
+                const imageInput = item.querySelector('.slide-image');
+
+                const saveSlideField = () => {
+                    const slide = bannerData.home.slides.find(s => s.id === id);
+                    if (slide) {
+                        slide.title = titleInput.value;
+                        slide.link = urlInput.value;
+                        slide.image = imageInput.value;
+                        // 更新预览图
+                        const preview = item.querySelector('.preview');
+                        if (slide.image) {
+                            preview.style.backgroundImage = `url('${slide.image}')`;
+                        } else {
+                            preview.style.backgroundImage = '';
+                        }
+                        saveData();
+                    }
+                };
+
+                titleInput.addEventListener('change', saveSlideField);
+                urlInput.addEventListener('change', saveSlideField);
+                imageInput.addEventListener('change', saveSlideField);
+            });
+
+            // 拖拽排序
+            let dragItem = null;
+            container.querySelectorAll('.carousel-item').forEach(item => {
+                item.addEventListener('dragstart', function (e) {
+                    dragItem = this;
+                    this.style.opacity = '0.4';
+                });
+                item.addEventListener('dragend', function (e) {
+                    this.style.opacity = '1';
+                });
+                item.addEventListener('dragover', function (e) {
+                    e.preventDefault();
+                });
+                item.addEventListener('drop', function (e) {
+                    e.preventDefault();
+                    if (dragItem && dragItem !== this) {
+                        const parent = container;
+                        const items = [...parent.querySelectorAll('.carousel-item')];
+                        const fromIdx = items.indexOf(dragItem);
+                        const toIdx = items.indexOf(this);
+                        if (fromIdx < toIdx) {
+                            this.parentNode.insertBefore(dragItem, this.nextSibling);
+                        } else {
+                            this.parentNode.insertBefore(dragItem, this);
+                        }
+                        // 更新数据顺序
+                        const newOrder = [];
+                        parent.querySelectorAll('.carousel-item').forEach(el => {
+                            const id = el.dataset.id;
+                            const slide = bannerData.home.slides.find(s => s.id === id);
+                            if (slide) newOrder.push(slide);
+                        });
+                        bannerData.home.slides = newOrder;
+                        saveData();
+                        renderCarousel();
+                        showToast('顺序已更新');
+                    }
+                });
+            });
+        }
+
+        // ============================================================
+        //  渲染：单页Banner（背景图 + 标题）
+        // ============================================================
+        function renderSinglePanel(key) {
+            const data = bannerData[key];
+            if (!data) return;
+
+            const previewEl = document.getElementById(`preview-${key}`);
+            const titleInput = document.getElementById(`${key}Title`);
+            const subtitleInput = document.getElementById(`${key}Subtitle`);
+
+            if (previewEl) {
+                if (data.image) {
+                    previewEl.innerHTML = `
+                            <div style="height:120px; background-image:url('${data.image}'); background-size:cover; background-position:center; border-radius:6px; position:relative;">
+                                <button class="remove-img" data-key="${key}"><i class="fas fa-times"></i></button>
+                            </div>
+                        `;
+                    previewEl.querySelector('.remove-img')?.addEventListener('click', function () {
+                        const k = this.dataset.key;
+                        bannerData[k].image = '';
+                        saveData();
+                        renderSinglePanel(k);
+                        showToast('已移除背景图');
+                    });
+                } else {
+                    previewEl.innerHTML = `<div class="empty-preview">暂无背景图</div>`;
+                }
+            }
+
+            if (titleInput) titleInput.value = data.title || '';
+            if (subtitleInput) subtitleInput.value = data.subtitle || '';
+        }
+
+        // ============================================================
+        //  保存单页Banner
+        // ============================================================
+        function saveSinglePanel(key) {
+            const titleInput = document.getElementById(`${key}Title`);
+            const subtitleInput = document.getElementById(`${key}Subtitle`);
+            if (titleInput) bannerData[key].title = titleInput.value.trim();
+            if (subtitleInput) bannerData[key].subtitle = subtitleInput.value.trim();
+            saveData();
+            renderSinglePanel(key);
+            showToast(`✅ 「${getPanelName(key)}」已保存`);
+        }
+
+        function getPanelName(key) {
+            const map = { market: '非遗集市', heritage: '匠心传承', academy: '非遗学堂', community: '社区' };
+            return map[key] || key;
+        }
+
+        // ============================================================
+        //  文件上传（图片转Base64）
+        // ============================================================
+        function handleFileUpload(key) {
+            const uploadArea = document.querySelector(`.upload-area[data-target="${key}"]`);
+            if (!uploadArea) return;
+            const input = uploadArea.querySelector('input[type="file"]');
+            input.addEventListener('change', function (e) {
+                const file = this.files[0];
+                if (!file) return;
+                if (!file.type.startsWith('image/')) {
+                    showToast('⚠️ 请选择图片文件');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function (ev) {
+                    const base64 = ev.target.result;
+                    bannerData[key].image = base64;
+                    saveData();
+                    renderSinglePanel(key);
+                    showToast('✅ 图片已上传');
+                    input.value = '';
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // ============================================================
+        //  添加轮播图
+        // ============================================================
+        function addSlide() {
+            const newSlide = {
+                id: generateId(),
+                image: 'https://picsum.photos/id/' + (1000 + Math.floor(Math.random() * 100)) + '/800/300',
+                title: '新轮播图',
+                link: ''
+            };
+            bannerData.home.slides.push(newSlide);
+            saveData();
+            renderCarousel();
+            showToast('✅ 已添加轮播图');
+            // 滚动到新添加的位置
+            const list = document.getElementById('carouselList');
+            if (list) list.scrollTop = list.scrollHeight;
+        }
+
+        // ============================================================
+        //  恢复默认
+        // ============================================================
+        function resetDefault() {
+            if (!confirm('确认恢复所有Banner到默认状态？将丢失所有自定义内容！')) return;
+            bannerData = JSON.parse(JSON.stringify(defaultData));
+            saveData();
+            renderAll();
+            showToast('🔄 已恢复默认');
+        }
+
+        // ============================================================
+        //  预览全部（简单弹窗展示）
+        // ============================================================
+        function previewAll() {
+            let msg = '📸 Banner预览\n' + '═'.repeat(30) + '\n';
+            const homeCount = bannerData.home.slides.length;
+            msg += `🏠 首页：${homeCount} 张轮播图\n`;
+            ['market', 'heritage', 'academy', 'community'].forEach(key => {
+                const d = bannerData[key];
+                const name = getPanelName(key);
+                const hasImg = d.image ? '✅ 有背景图' : '❌ 无背景图';
+                msg += `📌 ${name}：${hasImg} | 标题「${d.title || '未设置'}」\n`;
+            });
+            alert(msg);
+        }
+
+        // ============================================================
+        //  Tab切换
+        // ============================================================
+        function initTabs() {
+            const tabs = document.querySelectorAll('.banner-tab');
+            const panels = {
+                home: document.getElementById('panel-home'),
+                market: document.getElementById('panel-market'),
+                heritage: document.getElementById('panel-heritage'),
+                academy: document.getElementById('panel-academy'),
+                community: document.getElementById('panel-community')
+            };
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    const target = this.dataset.tab;
+                    Object.keys(panels).forEach(key => {
+                        panels[key].classList.toggle('active', key === target);
+                    });
+                    // 切换到对应面板时重新渲染
+                    if (target === 'home') renderCarousel();
+                    else renderSinglePanel(target);
+                });
+            });
+        }
+
+        // ============================================================
+        //  渲染全部
+        // ============================================================
+        function renderAll() {
+            renderCarousel();
+            ['market', 'heritage', 'academy', 'community'].forEach(key => {
+                renderSinglePanel(key);
+            });
+        }
+
+        // ============================================================
+        //  事件绑定
+        // ============================================================
+        function bindEvents() {
+            // 添加轮播图
+            document.getElementById('addSlideBtn').addEventListener('click', addSlide);
+
+            // 保存各页面
+            document.getElementById('saveHomeBtn').addEventListener('click', function () {
+                // 轮播图数据已通过 input change 自动保存，这里只做提示
+                showToast('✅ 轮播图已自动保存');
+            });
+
+            document.getElementById('saveMarketBtn').addEventListener('click', () => saveSinglePanel('market'));
+            document.getElementById('saveHeritageBtn').addEventListener('click', () => saveSinglePanel('heritage'));
+            document.getElementById('saveAcademyBtn').addEventListener('click', () => saveSinglePanel('academy'));
+            document.getElementById('saveCommunityBtn').addEventListener('click', () => saveSinglePanel('community'));
+
+            // 筛选
+            document.getElementById('filterBtn').addEventListener('click', resetDefault);
+
+            // 导出
+            document.getElementById('exportBtn').addEventListener('click', previewAll);
+
+            // 退出
+            document.getElementById('logoutBtn').addEventListener('click', function () {
+                if (confirm('退出工作台后将返回首页，是否确认？')) {
+                    showToast('👋 已退出');
+                    // window.location.href = '../个人资料/后台登录.html';
+                }
+            });
+
+            // 文件上传
+            ['market', 'heritage', 'academy', 'community'].forEach(key => {
+                handleFileUpload(key);
+            });
+        }
+
+        // ============================================================
+        //  初始化
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function () {
+            loadData();
+            initTabs();
+            renderAll();
+            bindEvents();
+        });
+    </script>
+
+</body>
+
+</html>

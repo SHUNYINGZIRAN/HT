@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云间小阁 - 设置</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ===== 全局重置 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        html::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f8f4e9;
+            color: #5c4c3e;
+            line-height: 1.6;
+            background-image:
+                radial-gradient(#d6ccc2 1px, transparent 1px),
+                radial-gradient(#d6ccc2 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            position: relative;
+            min-height: 100vh;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(248, 244, 233, 0.8);
+            z-index: -1;
+        }
+
+        a,
+        a * {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ===== 内容区域 ===== */
+        .content-area {
+            background: rgba(255, 253, 245, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(92, 76, 62, 0.08);
+            padding: 22px 26px;
+            border: 1px solid #d6ccc2;
+            flex: 1;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e9e1d5;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .content-title {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 1.7rem;
+            color: #8c3c2c;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .content-title i {
+            color: #8c6d46;
+            font-size: 1.3rem;
+        }
+
+        .content-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .header-btn {
+            padding: 6px 14px;
+            background: #8c6d46;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-family: inherit;
+            font-size: 0.85rem;
+        }
+
+        .header-btn:hover {
+            background: #745b3a;
+        }
+
+        .header-btn-outline {
+            background: transparent;
+            border: 1px solid #8c6d46;
+            color: #8c6d46;
+        }
+
+        .header-btn-outline:hover {
+            background: #f1e9dd;
+        }
+
+        /* ===== 设置选项分组 ===== */
+        .settings-group {
+            margin-bottom: 22px;
+        }
+
+        .settings-group-title {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #8c6d46;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #ede4d8;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .settings-group-title i {
+            font-size: 0.8rem;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            background: rgba(255, 253, 245, 0.6);
+            border-radius: 8px;
+            border: 1px solid #ede4d8;
+            margin-bottom: 6px;
+            transition: all 0.25s ease;
+        }
+
+        .setting-item:hover {
+            border-color: #d6ccc2;
+            background: rgba(255, 253, 245, 0.9);
+        }
+
+        .setting-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .setting-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .setting-icon.general {
+            background: rgba(140, 109, 70, 0.12);
+            color: #8c6d46;
+        }
+        .setting-icon.notif {
+            background: rgba(74, 111, 165, 0.12);
+            color: #4a6fa5;
+        }
+        .setting-icon.security {
+            background: rgba(140, 61, 44, 0.12);
+            color: #8c3c2c;
+        }
+        .setting-icon.privacy {
+            background: rgba(76, 140, 76, 0.12);
+            color: #4c8c4c;
+        }
+        .setting-icon.display {
+            background: rgba(140, 76, 76, 0.12);
+            color: #8c4c4c;
+        }
+        .setting-icon.advanced {
+            background: rgba(74, 106, 74, 0.12);
+            color: #4a7a4a;
+        }
+
+        .setting-info {
+            flex: 1;
+        }
+
+        .setting-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #4a382a;
+        }
+
+        .setting-desc {
+            font-size: 0.7rem;
+            color: #9b8a78;
+            margin-top: 1px;
+        }
+
+        .setting-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .setting-value {
+            font-size: 0.8rem;
+            color: #8c6d46;
+            background: rgba(140, 109, 70, 0.08);
+            padding: 2px 12px;
+            border-radius: 12px;
+        }
+
+        /* ===== 开关（古风柔和） ===== */
+        .toggle-switch {
+            width: 38px;
+            height: 20px;
+            background: #d6ccc2;
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch.active {
+            background: #8c6d46;
+        }
+
+        .toggle-switch .toggle-knob {
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        }
+
+        .toggle-switch.active .toggle-knob {
+            left: 20px;
+        }
+
+        /* ===== 选择器（下拉风格） ===== */
+        .setting-select {
+            padding: 4px 28px 4px 12px;
+            border: 1px solid #d6ccc2;
+            border-radius: 6px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.78rem;
+            color: #5c4c3e;
+            background: rgba(255, 253, 245, 0.9);
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238c6d46'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            cursor: pointer;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .setting-select:focus {
+            border-color: #8c6d46;
+            box-shadow: 0 0 0 2px rgba(140, 109, 70, 0.12);
+        }
+
+        /* ===== 输入框 ===== */
+        .setting-input {
+            padding: 4px 12px;
+            border: 1px solid #d6ccc2;
+            border-radius: 6px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.78rem;
+            color: #5c4c3e;
+            background: rgba(255, 253, 245, 0.9);
+            outline: none;
+            width: 140px;
+            transition: 0.2s;
+        }
+
+        .setting-input:focus {
+            border-color: #8c6d46;
+            box-shadow: 0 0 0 2px rgba(140, 109, 70, 0.12);
+        }
+
+        /* ===== 按钮（设置页专用小按钮） ===== */
+        .setting-btn {
+            padding: 4px 14px;
+            background: #8c6d46;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.72rem;
+            transition: all 0.3s ease;
+        }
+
+        .setting-btn:hover {
+            background: #745b3a;
+        }
+
+        .setting-btn-outline {
+            background: transparent;
+            border: 1px solid #8c6d46;
+            color: #8c6d46;
+        }
+
+        .setting-btn-outline:hover {
+            background: #f1e9dd;
+        }
+
+        /* ===== 保存按钮（底部） ===== */
+        .settings-save-bar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #ede4d8;
+        }
+
+        .settings-save-bar .header-btn {
+            font-size: 0.82rem;
+            padding: 6px 20px;
+        }
+
+        /* ===== 页脚 ===== */
+        .main-footer {
+            text-align: center;
+            padding: 24px 0 10px;
+            margin-top: 24px;
+            color: #9b8a78;
+            font-size: 0.75rem;
+            border-top: 1px solid #ede4d8;
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 12px;
+            }
+
+            .content-area {
+                padding: 16px 18px;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .setting-control {
+                width: 100%;
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .setting-input {
+                width: 100%;
+            }
+
+            .settings-save-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .settings-save-bar .header-btn {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content-title {
+                font-size: 1.3rem;
+            }
+
+            .header-btn {
+                padding: 5px 12px;
+                font-size: 0.8rem;
+            }
+
+            .setting-label {
+                font-size: 0.8rem;
+            }
+
+            .setting-desc {
+                font-size: 0.65rem;
+            }
+        }
+
+        /* ===== 装饰字 ===== */
+        .decoration {
+            position: absolute;
+            opacity: 0.07;
+            z-index: -1;
+            font-family: 'Ma Shan Zheng', cursive;
+            color: #8c3c2c;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .decoration-1 {
+            top: 50px;
+            left: 2%;
+            font-size: 5rem;
+            transform: rotate(-10deg);
+        }
+
+        .decoration-2 {
+            bottom: 80px;
+            right: 2%;
+            font-size: 4rem;
+            transform: rotate(12deg);
+        }
+
+        /* ===== Toast ===== */
+        .toast-msg {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #5c4c3e;
+            color: #fef5e6;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .toast-msg.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="decoration decoration-1">设</div>
+    <div class="decoration decoration-2">置</div>
+
+    <div class="container">
+        <!-- ===== 内容区域 ===== -->
+        <main class="content-area">
+            <!-- 头部 -->
+            <div class="content-header">
+                <h2 class="content-title">
+                    <i class="fas fa-cog"></i> 设置
+                </h2>
+                <span style="font-size:0.75rem; color:#9b8a78;">
+                    <i class="fas fa-save"></i> 更改将自动保存
+                </span>
+            </div>
+
+            <!-- ===== 设置选项 ===== -->
+
+            <!-- 个人资料 -->
+            <div class="settings-group">
+                <div class="settings-group-title">
+                    <i class="fas fa-user-circle"></i> 个人资料
+                </div>
+                <div class="setting-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon general">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="setting-info">
+                            <div class="setting-label">管理员名称</div>
+                            <div class="setting-desc">显示在后台各页面</div>
+                        </div>
+                    </div>
+                    <div class="setting-control">
+                        <input type="text" class="setting-input" value="李掌柜" id="adminName">
+                        <button class="setting-btn" id="saveNameBtn">更新</button>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon general">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="setting-info">
+                            <div class="setting-label">联系邮箱</div>
+                            <div class="setting-desc">用于接收系统通知</div>
+                        </div>
+                    </div>
+                    <div class="setting-control">
+                        <input type="email" class="setting-input" value="admin@yunjian.com" id="adminEmail">
+                        <button class="setting-btn" id="saveEmailBtn">更新</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 通知偏好 -->
+            <div class="settings-group">
+                <div class="settings-group-title">
+                    <i class="fas fa-bell"></i> 通知偏好
+                </div>
+                <div class="setting-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon notif">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="setting-info">
+                            <div class="setting-label">邮件通知</div>
+                            <div class="setting-desc">接收系统通知邮件</div>
+                        </div>
+                    </div>
+                    <div class="setting-control">
+                        <div class="toggle-switch active" data-setting="emailNotify">
+                            <div class="toggle-knob"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon notif">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="setting-info">
+                            <div class="setting-label">桌面通知</div>
+                            <div class="setting-desc">浏览器桌面弹窗提醒</div>
+                        </div>
+                    </div>
+                    <div class="setting-control">
+                        <div class="toggle-switch active" data-setting="desktopNotify">
+                            <div class="toggle-knob"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon notif">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="setting-info">
+                            <div class="setting-label">重要通知优先</div>
+                            <div class="setting-desc">重要通知独立提醒</div>
+                        </div>
+                    </div>
+                    <div class="setting-control">
+                        <div class="toggle-switch active" data-setting="priorityNotify">
+                            <div class="toggle-knob"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 安全设置 -->
+            <div class="settings-group">
+                <div class="settings-group-title">
+                    <i class="fas fa-shield-alt"></i> 安全设置
+                </div>
+                <div class="setting-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon security">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <div class="setting-info">
+                            <div class="setting-label">修改密码</div>
+                            <div class="setting-desc">定期更新密码保障安全</div>
+                        </div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="setting-btn" id="changePwdBtn">修改</button>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon security">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="setting-info">
+                            <div class="setting-label">双因素认证</div>
+                            <div class="setting-desc">登录时需二次验证</div>
+                        </div>
+                    </div>
+                    <div class="setting-control">
+                        <div class="toggle-switch" data-setting="twoFactor">
+                            <div class="toggle-knob"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon security">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <div class="setting-info">
+                            <div class="setting-label">登录历史</div>
+                            <div class="setting-desc">查看最近登录记录</div>
+                        </div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="setting-btn setting-btn-outline" id="loginHistoryBtn">查看记录</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 界面偏好 -->
+            <div class="settings-group">
+                <div class="settings-group-title">
+                    <i class="fas fa-palette"></i> 界面偏好
+                </div>
+                <div class="setting-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon display">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <div class="setting-info">
+                            <div class="setting-label">深色模式</div>
+                            <div class="setting-desc">切换后台界面配色</div>
+                        </div>
+                    </div>
+                    <div class="setting-control">
+                        <div class="toggle-switch" data-setting="darkMode">
+                            <div class="toggle-knob"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon display">
+                            <i class="fas fa-font"></i>
+                        </div>
+                        <div class="setting-info">
+                            <div class="setting-label">字体大小</div>
+                            <div class="setting-desc">调整界面文字大小</div>
+                        </div>
+                    </div>
+                    <div class="setting-control">
+                        <select class="setting-select" id="fontSizeSelect">
+                            <option value="small">小</option>
+                            <option value="medium" selected>中</option>
+                            <option value="large">大</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 高级设置 -->
+            <div class="settings-group">
+                <div class="settings-group-title">
+                    <i class="fas fa-code"></i> 高级设置
+                </div>
+                <div class="setting-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon advanced">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="setting-info">
+                            <div class="setting-label">数据导出</div>
+                            <div class="setting-desc">导出所有通知数据为JSON</div>
+                        </div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="setting-btn setting-btn-outline" id="exportDataBtn">导出</button>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-item-left">
+                        <div class="setting-icon advanced">
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
+                        <div class="setting-info">
+                            <div class="setting-label">清除所有通知</div>
+                            <div class="setting-desc">永久删除全部通知记录</div>
+                        </div>
+                    </div>
+                    <div class="setting-control">
+                        <button class="setting-btn" id="clearAllBtn" style="background:#b08070;">清除</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 保存栏 -->
+            <div class="settings-save-bar">
+                <button class="header-btn header-btn-outline" id="resetSettingsBtn">
+                    <i class="fas fa-undo"></i> 恢复默认
+                </button>
+                <button class="header-btn" id="saveSettingsBtn">
+                    <i class="fas fa-save"></i> 保存全部
+                </button>
+            </div>
+        </main>
+
+        <!-- ===== 页脚 ===== -->
+        <footer class="main-footer">
+            <p>© 2026 云间小阁 · 匠坊</p>
+        </footer>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-msg" id="toastMsg"></div>
+
+    <script>
+        // ============================================================
+        //  Toast
+        // ============================================================
+        function showToast(msg, duration = 2000) {
+            const el = document.getElementById('toastMsg');
+            el.textContent = msg;
+            el.classList.add('show');
+            clearTimeout(el._timer);
+            el._timer = setTimeout(() => el.classList.remove('show'), duration);
+        }
+
+        // ============================================================
+        //  开关切换
+        // ============================================================
+        document.querySelectorAll('.toggle-switch').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const setting = this.dataset.setting;
+                const isActive = this.classList.contains('active');
+                showToast(`${setting} 已${isActive ? '开启' : '关闭'}`);
+            });
+        });
+
+        // ============================================================
+        //  更新姓名
+        // ============================================================
+        document.getElementById('saveNameBtn').addEventListener('click', function() {
+            const name = document.getElementById('adminName').value.trim();
+            if (name) {
+                showToast('✅ 姓名已更新');
+            } else {
+                showToast('⚠️ 请输入有效姓名');
+            }
+        });
+
+        // ============================================================
+        //  更新邮箱
+        // ============================================================
+        document.getElementById('saveEmailBtn').addEventListener('click', function() {
+            const email = document.getElementById('adminEmail').value.trim();
+            if (email && email.includes('@')) {
+                showToast('✅ 邮箱已更新');
+            } else {
+                showToast('⚠️ 请输入有效邮箱');
+            }
+        });
+
+        // ============================================================
+        //  修改密码
+        // ============================================================
+        document.getElementById('changePwdBtn').addEventListener('click', function() {
+            const pwd = prompt('请输入新密码（至少6位）：');
+            if (pwd !== null && pwd.length >= 6) {
+                showToast('✅ 密码已更新');
+            } else if (pwd !== null) {
+                showToast('⚠️ 密码至少6位');
+            }
+        });
+
+        // ============================================================
+        //  登录历史
+        // ============================================================
+        document.getElementById('loginHistoryBtn').addEventListener('click', function() {
+            showToast('📋 最近登录：2025-06-22 09:30（IP 192.168.1.1）');
+        });
+
+        // ============================================================
+        //  字体大小
+        // ============================================================
+        document.getElementById('fontSizeSelect').addEventListener('change', function() {
+            const val = this.value;
+            const sizes = { small: '14px', medium: '16px', large: '18px' };
+            document.body.style.fontSize = sizes[val] || '16px';
+            showToast(`字体已切换为${this.options[this.selectedIndex].text}`);
+        });
+
+        // ============================================================
+        //  导出数据
+        // ============================================================
+        document.getElementById('exportDataBtn').addEventListener('click', function() {
+            const data = localStorage.getItem('adminNotifications');
+            if (data) {
+                const blob = new Blob([data], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `notifications_${new Date().toISOString().slice(0, 10)}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                showToast('📥 数据已导出');
+            } else {
+                showToast('⚠️ 暂无数据可导出');
+            }
+        });
+
+        // ============================================================
+        //  清除所有通知
+        // ============================================================
+        document.getElementById('clearAllBtn').addEventListener('click', function() {
+            if (confirm('⚠️ 确认删除所有通知记录？此操作不可恢复！')) {
+                localStorage.removeItem('adminNotifications');
+                showToast('🗑️ 已清除所有通知');
+            }
+        });
+
+        // ============================================================
+        //  恢复默认
+        // ============================================================
+        document.getElementById('resetSettingsBtn').addEventListener('click', function() {
+            if (confirm('恢复所有设置到默认状态？')) {
+                document.querySelectorAll('.toggle-switch').forEach(t => {
+                    if (['emailNotify', 'desktopNotify', 'priorityNotify'].includes(t.dataset.setting)) {
+                        t.classList.add('active');
+                    } else {
+                        t.classList.remove('active');
+                    }
+                });
+                document.getElementById('adminName').value = '李掌柜';
+                document.getElementById('adminEmail').value = 'admin@yunjian.com';
+                document.getElementById('fontSizeSelect').value = 'medium';
+                document.body.style.fontSize = '16px';
+                showToast('🔄 已恢复默认设置');
+            }
+        });
+
+        // ============================================================
+        //  保存全部
+        // ============================================================
+        document.getElementById('saveSettingsBtn').addEventListener('click', function() {
+            const settings = {};
+            document.querySelectorAll('.toggle-switch').forEach(t => {
+                settings[t.dataset.setting] = t.classList.contains('active');
+            });
+            settings.adminName = document.getElementById('adminName').value.trim();
+            settings.adminEmail = document.getElementById('adminEmail').value.trim();
+            settings.fontSize = document.getElementById('fontSizeSelect').value;
+
+            localStorage.setItem('adminSettings', JSON.stringify(settings));
+            showToast('✅ 全部设置已保存');
+        });
+
+        // ============================================================
+        //  加载保存的设置
+        // ============================================================
+        (function loadSavedSettings() {
+            const stored = localStorage.getItem('adminSettings');
+            if (stored) {
+                try {
+                    const settings = JSON.parse(stored);
+                    if (settings.adminName) {
+                        document.getElementById('adminName').value = settings.adminName;
+                    }
+                    if (settings.adminEmail) {
+                        document.getElementById('adminEmail').value = settings.adminEmail;
+                    }
+                    if (settings.fontSize) {
+                        document.getElementById('fontSizeSelect').value = settings.fontSize;
+                        const sizes = { small: '14px', medium: '16px', large: '18px' };
+                        document.body.style.fontSize = sizes[settings.fontSize] || '16px';
+                    }
+                    document.querySelectorAll('.toggle-switch').forEach(t => {
+                        const key = t.dataset.setting;
+                        if (settings[key] !== undefined) {
+                            t.classList.toggle('active', settings[key]);
+                        }
+                    });
+                } catch (e) { /* 忽略 */ }
+            }
+        })();
+    </script>
+</body>
+
+</html>
